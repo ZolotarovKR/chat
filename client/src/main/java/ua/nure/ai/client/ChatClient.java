@@ -7,8 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ChatClient {
 
@@ -17,8 +18,8 @@ public class ChatClient {
     private final String username;
     private final String serverAddress;
     private final int serverPort;
-    private final List<String> connectedUsers;
-    private final List<TextMessage> messages;
+    private final ObservableList<String> connectedUsers;
+    private final ObservableList<TextMessage> messages;
     private Socket socket;
     private BufferedReader input;
     private BufferedWriter output;
@@ -28,8 +29,8 @@ public class ChatClient {
         this.username = username;
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
-        this.connectedUsers = new ArrayList<>();
-        this.messages = new ArrayList<>();
+        this.connectedUsers = FXCollections.observableArrayList();
+        this.messages = FXCollections.observableArrayList();
         this.messageSerializer = new MessageSerializer();
     }
 
@@ -109,12 +110,12 @@ public class ChatClient {
         }
     }
 
-    public List<String> getConnectedUsers() {
-        return new ArrayList<>(connectedUsers);
+    public ObservableList<String> getConnectedUsers() {
+        return connectedUsers;
     }
 
-    public List<TextMessage> getMessages() {
-        return new ArrayList<>(messages);
+    public ObservableList<TextMessage> getMessages() {
+        return messages;
     }
 
     public void disconnect() {
