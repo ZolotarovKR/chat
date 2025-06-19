@@ -40,11 +40,29 @@ public class ChatController {
     }
 
     @FXML
+    private void sendTextMessage() {
+        String message = messageTextField.getText();
+        if (message.isBlank()) {
+            return;
+        }
+        String recipient = usersListView.getSelectionModel().getSelectedItem().toString();
+        client.sendTextMessage(recipient, message);
+        messageTextField.clear();
+    }
+
+    @FXML
     private void initialize() {
-        sendButton.setDisable(true);
         Platform.runLater(() -> {
             usersListView.setItems(client.getConnectedUsers());
         });
+        messagesListView.setItems(client.getMessages());
+        // usersListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        //     if (newValue != null) {
+        //         messagesListView.setItems(client.getMessages().filtered(predicate -> {
+        //             TextMessage message = (TextMessage) predicate;
+        //             return message.getRecipient().equals(newValue) || message.getSender().equals(newValue);
+        //         }));
+        //     }
+        // });
     }
-
 }

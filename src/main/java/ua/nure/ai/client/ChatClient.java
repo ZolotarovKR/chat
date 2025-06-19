@@ -1,15 +1,23 @@
 package ua.nure.ai.client;
 
-import ua.nure.ai.common.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.net.Socket;
-
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import ua.nure.ai.common.ConnectedUsersMessage;
+import ua.nure.ai.common.JoinMessage;
+import ua.nure.ai.common.Message;
+import ua.nure.ai.common.MessageSerializer;
+import ua.nure.ai.common.TextMessage;
 
 public class ChatClient {
 
@@ -87,18 +95,24 @@ public class ChatClient {
 
             switch (message) {
                 case ConnectedUsersMessage connectedUsersMessage -> {
-                    connectedUsers.clear();
-                    connectedUsers.addAll(connectedUsersMessage.getUsernames());
+                    Platform.runLater(() -> {
+                        connectedUsers.clear();
+                        connectedUsers.addAll(connectedUsersMessage.getUsernames());
+                    });
                     logger.info("Updated connected users: {}", connectedUsers);
 
                 }
                 case JoinMessage joinMessage -> {
-                    connectedUsers.add(joinMessage.getUsername());
+                    Platform.runLater(() -> {
+                        connectedUsers.add(joinMessage.getUsername());
+                    });
                     logger.info("User joined: {}", joinMessage.getUsername());
 
                 }
                 case TextMessage textMessage -> {
-                    messages.add(textMessage);
+                    Platform.runLater(() -> {
+                        messages.add(textMessage);
+                    });
                     logger.info("Received message from {}: {}", textMessage.getSender(), textMessage.getText());
                 }
                 default -> {
@@ -116,6 +130,10 @@ public class ChatClient {
 
     public ObservableList<TextMessage> getMessages() {
         return messages;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void disconnect() {

@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/21.0.7" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.nure.ai.client.ChatController">
    <children>
       <ListView fx:id="usersListView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="240.0" HBox.hgrow="NEVER" />
@@ -16,7 +15,7 @@
             <HBox VBox.vgrow="NEVER">
                <children>
                   <TextField fx:id="messageTextField" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="sendButton" mnemonicParsing="false" text="Send" HBox.hgrow="NEVER" />
+                  <Button fx:id="sendButton" mnemonicParsing="false" onAction="#sendTextMessage" text="Send" HBox.hgrow="NEVER" />
                </children>
             </HBox>
          </children>
